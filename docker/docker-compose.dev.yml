@@ -1,0 +1,26 @@
+version: "3.9"
+
+# Development overrides — only infrastructure services
+# Run: docker compose -f docker-compose.yml -f docker-compose.dev.yml up postgres redis
+
+services:
+  api:
+    profiles:
+      - full
+  celery-worker:
+    profiles:
+      - full
+  web:
+    profiles:
+      - full
+  nginx:
+    profiles:
+      - full
+
+  postgres:
+    ports:
+      - "5432:5432"
+
+  redis:
+    ports:
+      - "6379:6379"

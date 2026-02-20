@@ -1,0 +1,116 @@
+@import "tailwindcss";
+
+/* ============================================
+   BankAI Hub Design System — "Banking Clarity"
+   Dark monochrome + Gold (IB-Coin) accent
+   ============================================ */
+
+@theme {
+  /* Typography — IBM Plex Sans */
+  --font-display: 'IBM Plex Sans', sans-serif;
+  --font-body: 'IBM Plex Sans', sans-serif;
+  --font-mono: 'IBM Plex Mono', monospace;
+
+  /* Monochrome workspace */
+  --color-bg-primary: #0A0A0B;
+  --color-bg-secondary: #111113;
+  --color-bg-tertiary: #1A1A1E;
+  --color-bg-elevated: #222226;
+
+  --color-text-primary: #EDEDEF;
+  --color-text-secondary: #8B8B8E;
+  --color-text-tertiary: #5C5C5F;
+
+  --color-border-subtle: #2A2A2E;
+  --color-border-strong: #3A3A3E;
+
+  /* IB-Coin Gold — the ONLY accent */
+  --color-coin-gold: #D4A843;
+  --color-coin-gold-bright: #F0C75E;
+  --color-coin-gold-dim: #8A7035;
+  --color-coin-gold-glow: rgba(212, 168, 67, 0.15);
+
+  /* Semantic */
+  --color-status-success: #3ECF71;
+  --color-status-warning: #E5A93D;
+  --color-status-error: #E54D4D;
+  --color-status-info: #5B9BD5;
+
+  /* Motion */
+  --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
+  --ease-in-out: cubic-bezier(0.65, 0, 0.35, 1);
+  --duration-fast: 150ms;
+  --duration-normal: 250ms;
+  --duration-slow: 500ms;
+}
+
+/* Base styles */
+body {
+  background-color: var(--color-bg-primary);
+  color: var(--color-text-primary);
+  font-family: var(--font-body);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Scrollbar */
+::-webkit-scrollbar {
+  width: 6px;
+}
+::-webkit-scrollbar-track {
+  background: var(--color-bg-primary);
+}
+::-webkit-scrollbar-thumb {
+  background: var(--color-border-strong);
+  border-radius: 3px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: var(--color-text-tertiary);
+}
+
+/* Selection */
+::selection {
+  background-color: var(--color-coin-gold-glow);
+  color: var(--color-text-primary);
+}
+
+/* Focus ring */
+:focus-visible {
+  outline: 2px solid var(--color-coin-gold);
+  outline-offset: 2px;
+}
+
+/* Reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+/* ============================================
+   Light Theme Overrides
+   ============================================ */
+[data-theme="light"] {
+  --color-bg-primary: #F5F5F6;
+  --color-bg-secondary: #FFFFFF;
+  --color-bg-tertiary: #EBEBED;
+  --color-bg-elevated: #E0E0E2;
+
+  --color-text-primary: #1A1A1E;
+  --color-text-secondary: #5C5C5F;
+  --color-text-tertiary: #8B8B8E;
+
+  --color-border-subtle: #D5D5D8;
+  --color-border-strong: #BBBBBE;
+
+  --color-coin-gold: #B8912E;
+  --color-coin-gold-bright: #D4A843;
+  --color-coin-gold-dim: #8A7035;
+  --color-coin-gold-glow: rgba(184, 145, 46, 0.12);
+
+  --color-status-success: #2DA858;
+  --color-status-warning: #C48A1A;
+  --color-status-error: #CC3333;
+  --color-status-info: #4080B8;
+}
