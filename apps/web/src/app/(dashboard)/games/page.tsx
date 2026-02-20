@@ -68,6 +68,24 @@ const GAMES: GameInfo[] = [
     reward: "до 5 IB",
     icon: "🔍",
   },
+  {
+    id: "fraud-detector",
+    title: "Детектор Мошенничества",
+    description:
+      "Анализируйте транзакции и выявляйте мошеннические операции. Тренировка навыков fraud-аналитика.",
+    href: "/games/fraud-detector",
+    reward: "до 5 IB",
+    icon: "🛡️",
+  },
+  {
+    id: "cyber-security",
+    title: "Кибер Щит",
+    description:
+      "Распознавайте фишинг, социальную инженерию и киберугрозы. Защитите банк от атак.",
+    href: "/games/cyber-security",
+    reward: "до 5 IB",
+    icon: "🔐",
+  },
 ];
 
 export default function GamesPage() {
