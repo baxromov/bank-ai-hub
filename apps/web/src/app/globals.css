@@ -74,10 +74,15 @@ body {
   color: var(--color-text-primary);
 }
 
-/* Focus ring */
-:focus-visible {
+/* Focus ring — only for interactive elements, not form inputs */
+:focus-visible:not(textarea):not(input) {
   outline: 2px solid var(--color-coin-gold);
   outline-offset: 2px;
+}
+
+textarea:focus-visible,
+input:focus-visible {
+  outline: none;
 }
 
 /* Reduced motion */

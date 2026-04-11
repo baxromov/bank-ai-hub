@@ -91,6 +91,12 @@ class SqlAlchemyRankingRepository(AbstractRankingRepository):
         result = await self._session.execute(stmt)
         return [self._badge_to_entity(m) for m in result.scalars().all()]
 
+    async def get_badge_by_name(self, name: str) -> Badge | None:
+        stmt = select(BadgeModel).where(BadgeModel.name == name)
+        result = await self._session.execute(stmt)
+        m = result.scalar_one_or_none()
+        return self._badge_to_entity(m) if m else None
+
     async def get_user_badges(self, user_id: str) -> list[UserBadge]:
         stmt = select(UserBadgeModel).where(UserBadgeModel.user_id == user_id)
         result = await self._session.execute(stmt)

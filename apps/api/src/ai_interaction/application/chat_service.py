@@ -36,11 +36,17 @@ class ChatService:
         chat_history = [{"role": m.role, "content": m.content} for m in messages]
 
         # Call Ollama
+        import httpx
         start = time.monotonic()
-        response_text, token_count = await self._ollama.chat(
-            model=model,
-            messages=chat_history,
-        )
+        try:
+            response_text, token_count = await self._ollama.chat(
+                model=model,
+                messages=chat_history,
+            )
+        except httpx.HTTPStatusError as e:
+            if e.response.status_code == 404:
+                raise ValueError(f"Модель '{model}' не найдена в Ollama. Проверьте OLLAMA_DEFAULT_MODEL в .env") from e
+            raise
         latency_ms = int((time.monotonic() - start) * 1000)
 
         # Save assistant message

@@ -4,7 +4,7 @@ from pydantic import BaseModel, Field
 
 class CreateSessionRequest(BaseModel):
     title: str = "New Chat"
-    model: str = "qwen2.5:7b"
+    model: str | None = None
     agent_mode: str = "simple_chat"
 
 
@@ -35,4 +35,4 @@ class MessageResponse(BaseModel):
 class StreamRequest(BaseModel):
     session_id: str
     content: str = Field(..., min_length=1, max_length=15000)
-    model: str = "qwen2.5:7b"
+    model: str | None = None

@@ -1,4 +1,4 @@
-from sqlalchemy import select, desc
+from sqlalchemy import select, desc, delete
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from src.ai_interaction.domain.entities import ChatSession, ChatMessage
@@ -70,6 +70,14 @@ class SqlAlchemyChatRepository(AbstractChatRepository):
         await self._session.flush()
         await self._session.refresh(m)
         return self._message_to_entity(m)
+
+    async def delete_session(self, session_id: str) -> None:
+        await self._session.execute(
+            delete(ChatMessageModel).where(ChatMessageModel.session_id == session_id)
+        )
+        await self._session.execute(
+            delete(ChatSessionModel).where(ChatSessionModel.id == session_id)
+        )
 
     async def get_messages(self, session_id: str, limit: int = 50) -> list[ChatMessage]:
         stmt = (

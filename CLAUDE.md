@@ -4,7 +4,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Project Overview
 
-**BankAI Hub** — internal AI platform for Ipoteka Bank. Combines an on-premise LLM (Ollama, any model), a corporate currency system (IB-Coin), gamification (rankings, badges), and an MCP tool marketplace.
+**BankAI Hub** — internal AI platform for Ipoteka Bank. Combines an on-premise LLM (Ollama, any model), a corporate currency system (IB-Coin), gamification (rankings, badges, RPG levels, team battles), an MCP tool marketplace, and AI-assisted workflows for bank employees.
 
 ## Monorepo Structure
 
@@ -73,6 +73,13 @@ Each module under `apps/api/src/` follows a 4-layer Clean Architecture:
 
 **Contexts:** `identity`, `coin_economy`, `ranking`, `ai_interaction`, `ai_agents`, `tool_platform`, `marketplace`, `suggestions`
 **Supporting:** `notifications` (WebSocket), `audit` (middleware + logger)
+
+#### Gamification Features (added)
+- **RPG Level system** — `GET /api/rankings/me/level` computes XP from existing coin transactions + badges + game plays (no migration needed). Levels: Стажёр → Аналитик → Специалист → Эксперт → Магистр → Легенда Банка
+- **Team Battles** — `GET /api/rankings/departments` and `GET /api/rankings/departments/me` — aggregate scores by `users.department` JOIN `ranking_entries` (no migration needed)
+- **Badge award API** — `POST /api/rankings/badges/award` — admin manual award with notification
+- **Suggestion dividends** — `PATCH /api/suggestions/{id}/implement` — marks implemented, awards 25 coins to author
+- **Customer service badges** — `smile_master`, `problem_solver`, `fast_helper` added to seed data
 
 ### App Assembly
 
@@ -162,7 +169,7 @@ Dark monochrome workspace with **IB-Coin gold (#D4A843) as the only accent color
 
 - `(auth)/login` — login page
 - `(dashboard)/` — main app wrapped in AppShell (Sidebar + Header), auth-guarded
-- Pages: dashboard, chat, coins, rankings, marketplace, tools, tools/create, suggestions, profile, admin
+- Pages: dashboard, chat, coins, rankings, marketplace, tools, tools/create, suggestions, achievements, profile, admin, settings
 
 ### Component Organization
 
@@ -204,4 +211,10 @@ All config via environment variables, loaded by Pydantic Settings in `src/config
 
 ## Seed Data
 
-`python -m scripts.seed` creates: super admin (admin@ipotekabank.uz / admin123), demo user (demo@ipotekabank.uz / demo123), 5 coin accrual rules, 7 badges, 6 marketplace items.
+`python -m scripts.seed` creates: super admin (admin@ipotekabank.uz / admin123), demo user (demo@ipotekabank.uz / demo123), 5 coin accrual rules, 10 badges (7 standard + 3 customer_service), 6 marketplace items.
+
+`python -m scripts.demo_seed` creates full demo dataset: 18 employees across all 8 departments (Uzbek names), coin balances + 514 transactions (last 30 days), ranking entries for current week (72 rows), 18 badge awards, 8 suggestions, 5 marketplace purchases, 5 chat sessions, 17 notifications. Demo logins: `sarvinoz.hasanova@ipotekabank.uz / demo123`, `aziz.karimov@ipotekabank.uz / demo123`. Script is idempotent — safe to re-run.
+
+## Chat Model Configuration
+
+The LLM model used in AI Chat is configured via `OLLAMA_DEFAULT_MODEL` in `.env`. The model selector has been removed from the frontend — model is set automatically from the backend config and displayed as a read-only indicator. `GET /api/chat/models` returns `{ models, default_model }` where `default_model` comes from `settings.OLLAMA_DEFAULT_MODEL`.

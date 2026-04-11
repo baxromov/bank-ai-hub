@@ -33,6 +33,7 @@ async function request<T>(
     throw new ApiError(response.status, error.detail || "Request failed");
   }
 
+  if (response.status === 204) return undefined as T;
   return response.json();
 }
 
@@ -61,7 +62,47 @@ export const chatApi = {
   getMessages: (sessionId: string) => api.get<any[]>(`/chat/sessions/${sessionId}/messages`),
   sendMessage: (sessionId: string, content: string) =>
     api.post<any>(`/chat/sessions/${sessionId}/messages`, { content }),
+  deleteSession: (sessionId: string) => api.delete<void>(`/chat/sessions/${sessionId}`),
   getModels: () => api.get<{ models: any[] }>("/chat/models"),
+  streamMessage: async (
+    sessionId: string,
+    content: string,
+    onChunk: (chunk: string) => void,
+  ): Promise<void> => {
+    const token = typeof window !== "undefined" ? localStorage.getItem("access_token") : null;
+    const response = await fetch(`${API_URL}/chat/stream`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        ...(token ? { Authorization: `Bearer ${token}` } : {}),
+      },
+      body: JSON.stringify({ session_id: sessionId, content }),
+    });
+    if (!response.ok) {
+      const err = await response.json().catch(() => ({ detail: "Stream failed" }));
+      throw new ApiError(response.status, err.detail || "Stream failed");
+    }
+    const reader = response.body!.getReader();
+    const decoder = new TextDecoder();
+    let buffer = "";
+    while (true) {
+      const { done, value } = await reader.read();
+      if (done) break;
+      buffer += decoder.decode(value, { stream: true });
+      const lines = buffer.split("\n");
+      buffer = lines.pop() ?? "";
+      for (const line of lines) {
+        if (line.startsWith("data: ")) {
+          const data = line.slice(6).trim();
+          if (data === "[DONE]") return;
+          try {
+            const parsed = JSON.parse(data);
+            if (parsed.content) onChunk(parsed.content);
+          } catch {}
+        }
+      }
+    }
+  },
 };
 
 export const coinsApi = {
@@ -76,6 +117,13 @@ export const rankingsApi = {
     api.get<any[]>(`/rankings/current?category=${category}&limit=${limit}`),
   getHighlights: () => api.get<any>("/rankings/highlights"),
   getMyRanking: () => api.get<any>("/rankings/me"),
+  getAllBadges: () => api.get<any[]>("/rankings/badges"),
+  getMyBadges: () => api.get<any[]>("/rankings/me/badges"),
+  getMyLevel: () => api.get<any>("/rankings/me/level"),
+  awardBadge: (user_id: string, badge_name: string, reason?: string) =>
+    api.post<any>("/rankings/badges/award", { user_id, badge_name, reason }),
+  getDepartments: () => api.get<any[]>("/rankings/departments"),
+  getMyDepartment: () => api.get<any>("/rankings/departments/me"),
 };
 
 export const marketplaceApi = {

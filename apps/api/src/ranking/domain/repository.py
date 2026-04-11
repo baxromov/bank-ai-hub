@@ -25,6 +25,9 @@ class AbstractRankingRepository(ABC):
     async def list_badges(self) -> list[Badge]: ...
 
     @abstractmethod
+    async def get_badge_by_name(self, name: str) -> Badge | None: ...
+
+    @abstractmethod
     async def get_user_badges(self, user_id: str) -> list[UserBadge]: ...
 
     @abstractmethod

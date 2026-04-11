@@ -177,6 +177,31 @@ async def seed() -> None:
                 category="ai_innovator",
                 threshold=1000,
             ),
+            # Mijozlar Qahramoni badges (customer service — awarded manually by admin)
+            BadgeModel(
+                id=str(uuid.uuid4()),
+                name="smile_master",
+                name_ru="Мастер улыбки",
+                description="Получил высокую оценку клиентов за позитивное обслуживание",
+                category="customer_service",
+                threshold=1,
+            ),
+            BadgeModel(
+                id=str(uuid.uuid4()),
+                name="problem_solver",
+                name_ru="Решатель проблем",
+                description="Успешно решил сложную проблему клиента",
+                category="customer_service",
+                threshold=1,
+            ),
+            BadgeModel(
+                id=str(uuid.uuid4()),
+                name="fast_helper",
+                name_ru="Быстрая помощь",
+                description="Обслужил клиента быстрее всех в команде",
+                category="customer_service",
+                threshold=1,
+            ),
         ]
         session.add_all(badges)
 

@@ -37,3 +37,19 @@ class ReviewSuggestionUseCase:
         await self._repo.update(suggestion)
 
         return {"status": "rejected", "suggestion_id": suggestion_id}
+
+    async def implement(self, suggestion_id: str, reviewer_id: str) -> dict:
+        suggestion = await self._repo.get_by_id(suggestion_id)
+        if not suggestion:
+            raise SuggestionNotFoundError(f"Suggestion {suggestion_id} not found")
+
+        suggestion.status = "implemented"
+        suggestion.reviewed_by = reviewer_id
+        await self._repo.update(suggestion)
+
+        return {
+            "status": "implemented",
+            "suggestion_id": suggestion_id,
+            "author_id": suggestion.user_id,
+            "title": suggestion.title,
+        }

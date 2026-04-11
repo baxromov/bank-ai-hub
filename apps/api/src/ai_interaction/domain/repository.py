@@ -20,3 +20,6 @@ class AbstractChatRepository(ABC):
 
     @abstractmethod
     async def get_messages(self, session_id: str, limit: int = 50) -> list[ChatMessage]: ...
+
+    @abstractmethod
+    async def delete_session(self, session_id: str) -> None: ...

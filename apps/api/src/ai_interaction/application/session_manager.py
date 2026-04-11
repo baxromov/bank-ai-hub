@@ -1,6 +1,7 @@
 import uuid
 from src.ai_interaction.domain.entities import ChatSession
 from src.ai_interaction.domain.repository import AbstractChatRepository
+from src.config import settings
 
 
 class SessionNotFoundError(Exception):
@@ -12,9 +13,10 @@ class SessionManager:
         self._repo = repo
 
     async def create_session(
-        self, user_id: str, title: str = "New Chat", model: str = "qwen2.5:7b",
+        self, user_id: str, title: str = "New Chat", model: str | None = None,
         agent_mode: str = "simple_chat",
     ) -> ChatSession:
+        model = model or settings.OLLAMA_DEFAULT_MODEL
         session = ChatSession(
             id=str(uuid.uuid4()),
             user_id=user_id,

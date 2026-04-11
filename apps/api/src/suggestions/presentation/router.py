@@ -9,6 +9,9 @@ from src.suggestions.application.review_suggestion import ReviewSuggestionUseCas
 from src.suggestions.presentation.schemas import (
     SubmitSuggestionRequest, SuggestionResponse, ApproveSuggestionRequest,
 )
+from src.coin_economy.infrastructure.repository import SqlAlchemyCoinRepository
+from src.coin_economy.application.earn_coins import EarnCoinsUseCase
+from src.notifications.service import NotificationService
 
 router = APIRouter()
 
@@ -78,6 +81,42 @@ async def approve_suggestion(
         return result
     except SuggestionNotFoundError as e:
         raise HTTPException(status_code=404, detail=str(e))
+
+
+@router.patch("/{suggestion_id}/implement")
+async def implement_suggestion(
+    suggestion_id: str,
+    session: AsyncSession = Depends(get_session),
+    reviewer_id: str = Depends(get_current_user_id),
+    _: str = Depends(require_admin),
+):
+    suggestion_repo = SqlAlchemySuggestionRepository(session)
+    use_case = ReviewSuggestionUseCase(suggestion_repo)
+    try:
+        result = await use_case.implement(suggestion_id, reviewer_id)
+    except SuggestionNotFoundError as e:
+        raise HTTPException(status_code=404, detail=str(e))
+
+    coin_repo = SqlAlchemyCoinRepository(session)
+    earn_uc = EarnCoinsUseCase(coin_repo)
+    earned = await earn_uc.execute(
+        user_id=result["author_id"],
+        action_type="suggestion",
+        description=f"Ваша идея «{result['title']}» реализована! Дивиденды за вклад.",
+        quality_score=1.0,
+    )
+
+    notif_svc = NotificationService(session)
+    await notif_svc.create(
+        user_id=result["author_id"],
+        type="suggestion_implemented",
+        title="Ваша идея реализована! 🎉",
+        message=f"«{result['title']}» воплощена в жизнь. Вы получили {earned.get('earned', 0)} IB-монет.",
+        data={"suggestion_id": suggestion_id, "coins_earned": earned.get("earned", 0)},
+    )
+
+    await session.commit()
+    return {**result, "coins_awarded": earned.get("earned", 0)}
 
 
 @router.patch("/{suggestion_id}/reject")

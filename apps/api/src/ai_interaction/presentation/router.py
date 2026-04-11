@@ -90,6 +90,22 @@ async def get_messages(
     return messages
 
 
+@router.delete("/sessions/{session_id}", status_code=204)
+async def delete_session(
+    session_id: str,
+    user_id: str = Depends(get_current_user_id),
+    session: AsyncSession = Depends(get_session),
+):
+    repo = SqlAlchemyChatRepository(session)
+    s = await repo.get_session(session_id)
+    if not s:
+        raise HTTPException(status_code=404, detail="Session not found")
+    if s.user_id != user_id:
+        raise HTTPException(status_code=403, detail="Forbidden")
+    await repo.delete_session(session_id)
+    await session.commit()
+
+
 @router.post("/sessions/{session_id}/messages")
 async def send_message(
     session_id: str,
@@ -103,9 +119,10 @@ async def send_message(
         s = await repo.get_session(session_id)
         if not s:
             raise HTTPException(status_code=404, detail="Session not found")
+        from src.config import settings
         result = await chat_service.send_message(
             session_id=session_id, user_id=user_id,
-            content=body.content, model=s.model,
+            content=body.content, model=settings.OLLAMA_DEFAULT_MODEL,
         )
         await session.commit()
         return result
@@ -122,10 +139,11 @@ async def stream_chat(
     repo = SqlAlchemyChatRepository(session)
     stream_service = StreamChatService(repo, ollama)
 
+    from src.config import settings as _settings
     async def event_generator():
         async for chunk in stream_service.stream_message(
             session_id=body.session_id, user_id=user_id,
-            content=body.content, model=body.model,
+            content=body.content, model=_settings.OLLAMA_DEFAULT_MODEL,
         ):
             yield f"data: {json.dumps({'content': chunk})}\n\n"
         yield "data: [DONE]\n\n"
@@ -136,8 +154,9 @@ async def stream_chat(
 
 @router.get("/models")
 async def list_models():
+    from src.config import settings
     try:
         models = await ollama.list_models()
-        return {"models": models}
+        return {"models": models, "default_model": settings.OLLAMA_DEFAULT_MODEL}
     except Exception:
-        return {"models": [], "error": "Ollama not available"}
+        return {"models": [], "default_model": settings.OLLAMA_DEFAULT_MODEL, "error": "Ollama not available"}

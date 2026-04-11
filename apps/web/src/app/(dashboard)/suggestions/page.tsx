@@ -32,11 +32,20 @@ export default function SuggestionsPage() {
 
   const statusVariant = (status: string) => {
     switch (status) {
-      case "approved": case "implemented": return "success";
+      case "approved": return "success";
+      case "implemented": return "gold";
       case "rejected": return "error";
       case "submitted": case "under_review": return "warning";
       default: return "default";
     }
+  };
+
+  const statusLabel: Record<string, string> = {
+    submitted: "Отправлено",
+    under_review: "На рассмотрении",
+    approved: "Одобрено",
+    rejected: "Отклонено",
+    implemented: "✓ Реализовано",
   };
 
   return (
@@ -100,7 +109,7 @@ export default function SuggestionsPage() {
                       +{s.coin_reward} IB
                     </span>
                   )}
-                  <Badge variant={statusVariant(s.status)}>{s.status}</Badge>
+                  <Badge variant={statusVariant(s.status)}>{statusLabel[s.status] ?? s.status}</Badge>
                 </div>
               </div>
             </Card>
