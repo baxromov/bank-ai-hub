@@ -173,6 +173,7 @@ export default function MarketplacePage() {
             const cat = CATEGORIES.find((c) => c.key === item.category) ?? CATEGORIES[0];
             const isPurchased = purchasedIds.has(item.id);
             const isBuying = purchasing === item.id;
+            const isComingSoon = item.stock === 0;
             return (
               <div
                 key={item.id}
@@ -182,6 +183,7 @@ export default function MarketplacePage() {
                   border: "1px solid var(--color-border-subtle)",
                   boxShadow: "var(--shadow-sm)",
                   overflow: "hidden",
+                  opacity: isComingSoon ? 0.75 : 1,
                 }}
               >
                 {/* Card header strip */}
@@ -211,14 +213,24 @@ export default function MarketplacePage() {
                       >
                         {item.name_ru}
                       </h3>
-                      {item.linked_tool_id && (
-                        <span
-                          className="shrink-0 text-xs font-semibold px-2 py-0.5 rounded-full"
-                          style={{ backgroundColor: "rgba(139,92,246,0.12)", color: "#8b5cf6" }}
-                        >
-                          AI
-                        </span>
-                      )}
+                      <div className="flex items-center gap-1 shrink-0">
+                        {isComingSoon && (
+                          <span
+                            className="text-xs font-semibold px-2 py-0.5 rounded-full"
+                            style={{ backgroundColor: "rgba(107,114,128,0.12)", color: "#6b7280" }}
+                          >
+                            Скоро
+                          </span>
+                        )}
+                        {item.linked_tool_id && (
+                          <span
+                            className="text-xs font-semibold px-2 py-0.5 rounded-full"
+                            style={{ backgroundColor: "rgba(139,92,246,0.12)", color: "#8b5cf6" }}
+                          >
+                            AI
+                          </span>
+                        )}
+                      </div>
                     </div>
                     <span
                       className="text-xs mt-0.5 inline-block"
@@ -245,7 +257,17 @@ export default function MarketplacePage() {
                   style={{ borderTop: "1px solid var(--color-border-subtle)" }}
                 >
                   <CoinBadge amount={item.price} />
-                  {isPurchased ? (
+                  {isComingSoon ? (
+                    <span
+                      className="flex items-center gap-1.5 text-xs font-semibold px-3 py-1.5 rounded-xl"
+                      style={{ backgroundColor: "rgba(107,114,128,0.10)", color: "#6b7280", border: "1px dashed #d1d5db" }}
+                    >
+                      <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                        <path strokeLinecap="round" strokeLinejoin="round" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+                      </svg>
+                      Скоро
+                    </span>
+                  ) : isPurchased ? (
                     <span
                       className="flex items-center gap-1.5 text-xs font-semibold px-3 py-1.5 rounded-xl"
                       style={{ backgroundColor: "rgba(82,174,48,0.12)", color: "var(--color-brand)" }}
