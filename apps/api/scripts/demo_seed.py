@@ -79,6 +79,11 @@ EMPLOYEES = [
     # Legal
     dict(employee_id="LGL001", email="dilorom.xasanova@ipotekabank.uz",   first_name="Дилором", last_name="Хасанова",  department=Department.LEGAL,     position="Юрист"),
     dict(employee_id="LGL002", email="behruz.saidov@ipotekabank.uz",      first_name="Бехруз", last_name="Саидов",    department=Department.LEGAL,      position="Старший юрист"),
+    # New employees
+    dict(employee_id="HR003",  email="gulnoza.lutfullaeva@ipotekabank.uz", first_name="Гулноза",  last_name="Лутфуллаева", department=Department.HR,       position="HR Business Partner"),
+    dict(employee_id="SAL004", email="shakhzoda.bendik@ipotekabank.uz",    first_name="Шахзода",  last_name="Бендик",      department=Department.SALES,    position="Менеджер по работе с клиентами"),
+    dict(employee_id="FIN003", email="shakhnoza.umarova@ipotekabank.uz",   first_name="Шахноза",  last_name="Умарова",     department=Department.FINANCE,  position="Финансовый контролёр"),
+    dict(employee_id="OPS003", email="yevgenia.babaeva@ipotekabank.uz",    first_name="Евгения",  last_name="Бабаева",     department=Department.OPERATIONS, position="Старший операционный специалист"),
 ]
 
 # Coin & ranking profiles per employee (index-aligned with EMPLOYEES)
@@ -102,6 +107,11 @@ PROFILES = [
     (260,   15, 25.0,  35.0,   8.0,   85.0),  # MRK002
     (190,   10, 18.0,  25.0,   5.0,   70.0),  # LGL001
     (140,    5, 12.0,  18.0,   3.0,   55.0),  # LGL002
+    # New employees
+    (760,  180, 98.0,  88.0,  42.0,  205.0),  # HR003   - Gulnoza Lutfullaeva
+    (880,  220, 125.0, 82.0,  58.0,  230.0),  # SAL004  - Shakhzoda Bendik
+    (640,  130, 78.0,  105.0, 35.0,  185.0),  # FIN003  - Shakhnoza Umarova
+    (710,  160, 90.0,  96.0,  48.0,  215.0),  # OPS003  - Yevgenia Babaeva
 ]
 
 CHAT_TOPICS = [
@@ -301,6 +311,18 @@ async def seed_demo(session: AsyncSession) -> None:
         (5, "smile_master"),   # SAL001
         (6, "problem_solver"), # SAL002
         (7, "fast_helper"),    # SAL003
+        # New employees
+        (18, "first_prompt"),   # Gulnoza Lutfullaeva
+        (18, "quality_writer"),
+        (19, "first_prompt"),   # Shakhzoda Bendik
+        (19, "prompt_master_100"),
+        (19, "top3_weekly"),
+        (19, "smile_master"),
+        (20, "first_prompt"),   # Shakhnoza Umarova
+        (20, "quality_writer"),
+        (21, "first_prompt"),   # Yevgenia Babaeva
+        (21, "top3_weekly"),
+        (21, "idea_generator"),
     ]
 
     for emp_idx, badge_name in badge_awards:
@@ -325,7 +347,7 @@ async def seed_demo(session: AsyncSession) -> None:
     print("  ✓ Badge awards yaratildi")
 
     # ─── 6. Suggestions ───────────────────────────────────────────────────────
-    suggestion_authors = [0, 10, 3, 6, 10, 3, 14, 12]  # employee index
+    suggestion_authors = [0, 10, 3, 6, 10, 3, 14, 12, 19, 21, 18, 20]  # employee index
 
     for i, sug_data in enumerate(SUGGESTIONS_DATA):
         emp_idx = suggestion_authors[i % len(suggestion_authors)]
@@ -387,7 +409,7 @@ async def seed_demo(session: AsyncSession) -> None:
     print("  ✓ Marketplace purchases yaratildi")
 
     # ─── 8. Chat sessions + messages ──────────────────────────────────────────
-    chat_users = [0, 3, 5, 10, 12]  # employees who chat frequently
+    chat_users = [0, 3, 5, 10, 12, 18, 19, 20, 21]  # employees who chat frequently
     models_list = ["qwen2.5:7b", "qwen2.5:14b"]
 
     for chat_idx, emp_idx in enumerate(chat_users):
@@ -439,7 +461,7 @@ async def seed_demo(session: AsyncSession) -> None:
         ("ranking_update", "Вы поднялись в рейтинге! 📈", "Поздравляем! Вы вошли в топ-5 рейтинга AI Инноваторов этой недели."),
     ]
 
-    for emp_idx in range(min(8, len(created_users))):
+    for emp_idx in list(range(min(8, len(created_users)))) + [18, 19, 20, 21]:
         user_id = created_users[emp_idx][0]
         notif_type, title_tpl, msg_tpl = random.choice(notif_templates)
         n = random.randint(3, 15)
@@ -460,12 +482,15 @@ async def seed_demo(session: AsyncSession) -> None:
 
     await session.commit()
     print("\n✅ Demo seed muvaffaqiyatli yakunlandi!")
-    print(f"   👥 Xodimlar: {len(created_users)}")
-    print(f"   📊 Ranking: hafta {week}/{year} — 4 kategoriya")
-    print(f"   💡 Takliflar: {len(SUGGESTIONS_DATA)}")
-    print(f"   💬 Chat sessiyalar: {len(chat_users)}")
+    print(f"   Xodimlar: {len(created_users)}")
+    print(f"   Ranking: hafta {week}/{year} — 4 kategoriya")
+    print(f"   Takliflar: {len(SUGGESTIONS_DATA)}")
+    print(f"   Chat sessiyalar: {len(chat_users)}")
     print("\n   Demo login: aziz.karimov@ipotekabank.uz / demo123")
-    print("   Top user:   sarvinoz.hasanova@ipotekabank.uz / demo123")
+    print("   New users:  gulnoza.lutfullaeva@ipotekabank.uz / demo123")
+    print("               shakhzoda.bendik@ipotekabank.uz / demo123")
+    print("               shakhnoza.umarova@ipotekabank.uz / demo123")
+    print("               yevgenia.babaeva@ipotekabank.uz / demo123")
 
 
 async def main() -> None:
