@@ -87,7 +87,7 @@ services:
     container_name: ibhub-web
     restart: unless-stopped
     ports:
-      - "3000:3000"
+      - "3001:3000"
     environment:
       NEXT_PUBLIC_API_URL: /api
       NEXT_PUBLIC_WS_URL: ""

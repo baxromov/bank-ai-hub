@@ -7,11 +7,13 @@ interface CardProps extends React.HTMLAttributes<HTMLDivElement> {
 export function Card({ className, glow, children, ...props }: CardProps) {
   return (
     <div
-      className={cn("rounded-lg p-4", className)}
+      className={cn("rounded-2xl p-5", className)}
       style={{
         backgroundColor: "var(--color-bg-secondary)",
         border: "1px solid var(--color-border-subtle)",
-        ...(glow ? { boxShadow: "0 0 20px var(--color-coin-gold-glow)" } : {}),
+        boxShadow: glow
+          ? "var(--shadow-md), 0 0 24px var(--color-coin-gold-glow)"
+          : "var(--shadow-sm)",
       }}
       {...props}
     >
@@ -31,8 +33,8 @@ export function CardHeader({ className, children, ...props }: React.HTMLAttribut
 export function CardTitle({ className, children, ...props }: React.HTMLAttributes<HTMLHeadingElement>) {
   return (
     <h3
-      className={cn("text-sm font-medium", className)}
-      style={{ color: "var(--color-text-secondary)" }}
+      className={cn("text-xs font-semibold uppercase tracking-wider", className)}
+      style={{ color: "var(--color-text-tertiary)" }}
       {...props}
     >
       {children}
@@ -43,7 +45,7 @@ export function CardTitle({ className, children, ...props }: React.HTMLAttribute
 export function CardValue({ className, children, ...props }: React.HTMLAttributes<HTMLDivElement>) {
   return (
     <div
-      className={cn("text-2xl font-bold tabular-nums", className)}
+      className={cn("text-3xl font-bold tabular-nums mt-1", className)}
       style={{ color: "var(--color-text-primary)", fontFamily: "var(--font-mono)" }}
       {...props}
     >

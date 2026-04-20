@@ -1,8 +1,8 @@
 @import "tailwindcss";
 
 /* ============================================
-   BankAI Hub Design System — "Banking Clarity"
-   Dark monochrome + Gold (IB-Coin) accent
+   BankAI Hub Design System — "Ipoteka Bank"
+   Light Mode · Brand Green · IB-Coin Gold
    ============================================ */
 
 @theme {
@@ -11,30 +11,44 @@
   --font-body: 'IBM Plex Sans', sans-serif;
   --font-mono: 'IBM Plex Mono', monospace;
 
-  /* Monochrome workspace */
-  --color-bg-primary: #0A0A0B;
-  --color-bg-secondary: #111113;
-  --color-bg-tertiary: #1A1A1E;
-  --color-bg-elevated: #222226;
+  /* Light Mode (Default) */
+  --color-bg-primary: #F4F7F4;
+  --color-bg-secondary: #FFFFFF;
+  --color-bg-tertiary: #F0F5F0;
+  --color-bg-elevated: #E6EEE6;
 
-  --color-text-primary: #EDEDEF;
-  --color-text-secondary: #8B8B8E;
-  --color-text-tertiary: #5C5C5F;
+  --color-text-primary: #0D2B0D;
+  --color-text-secondary: #4A6741;
+  --color-text-tertiary: #8FAB8A;
 
-  --color-border-subtle: #2A2A2E;
-  --color-border-strong: #3A3A3E;
+  --color-border-subtle: #D8E8D5;
+  --color-border-strong: #B8D4B3;
 
-  /* IB-Coin Gold — the ONLY accent */
+  /* Ipoteka Bank Green — primary brand accent */
+  --color-brand: #52ae30;
+  --color-brand-dark: #1a6832;
+  --color-brand-light: #7cc85e;
+  --color-brand-glow: rgba(82, 174, 48, 0.15);
+  --color-brand-surface: rgba(82, 174, 48, 0.08);
+
+  /* IB-Coin Gold — coin accent */
   --color-coin-gold: #D4A843;
   --color-coin-gold-bright: #F0C75E;
-  --color-coin-gold-dim: #8A7035;
-  --color-coin-gold-glow: rgba(212, 168, 67, 0.15);
+  --color-coin-gold-dim: #B8912E;
+  --color-coin-gold-glow: rgba(212, 168, 67, 0.18);
 
   /* Semantic */
-  --color-status-success: #3ECF71;
-  --color-status-warning: #E5A93D;
-  --color-status-error: #E54D4D;
-  --color-status-info: #5B9BD5;
+  --color-status-success: #10B981;
+  --color-status-warning: #F59E0B;
+  --color-status-error: #EF4444;
+  --color-status-info: #3B82F6;
+
+  /* Shadows */
+  --shadow-xs: 0 1px 2px rgba(13, 43, 13, 0.06);
+  --shadow-sm: 0 1px 3px rgba(13, 43, 13, 0.08), 0 1px 2px rgba(13, 43, 13, 0.04);
+  --shadow-md: 0 4px 6px rgba(13, 43, 13, 0.07), 0 2px 4px rgba(13, 43, 13, 0.04);
+  --shadow-lg: 0 10px 15px rgba(13, 43, 13, 0.08), 0 4px 6px rgba(13, 43, 13, 0.04);
+  --shadow-xl: 0 20px 25px rgba(13, 43, 13, 0.10), 0 8px 10px rgba(13, 43, 13, 0.04);
 
   /* Motion */
   --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
@@ -58,25 +72,25 @@ body {
   width: 6px;
 }
 ::-webkit-scrollbar-track {
-  background: var(--color-bg-primary);
+  background: transparent;
 }
 ::-webkit-scrollbar-thumb {
   background: var(--color-border-strong);
   border-radius: 3px;
 }
 ::-webkit-scrollbar-thumb:hover {
-  background: var(--color-text-tertiary);
+  background: var(--color-brand-light);
 }
 
 /* Selection */
 ::selection {
-  background-color: var(--color-coin-gold-glow);
+  background-color: var(--color-brand-surface);
   color: var(--color-text-primary);
 }
 
-/* Focus ring — only for interactive elements, not form inputs */
+/* Focus ring */
 :focus-visible:not(textarea):not(input) {
-  outline: 2px solid var(--color-coin-gold);
+  outline: 2px solid var(--color-brand);
   outline-offset: 2px;
 }
 
@@ -94,28 +108,40 @@ input:focus-visible {
 }
 
 /* ============================================
-   Light Theme Overrides
+   Dark Theme Overrides
    ============================================ */
-[data-theme="light"] {
-  --color-bg-primary: #F5F5F6;
-  --color-bg-secondary: #FFFFFF;
-  --color-bg-tertiary: #EBEBED;
-  --color-bg-elevated: #E0E0E2;
+[data-theme="dark"] {
+  --color-bg-primary: #0A150A;
+  --color-bg-secondary: #111C11;
+  --color-bg-tertiary: #182318;
+  --color-bg-elevated: #1F2E1F;
 
-  --color-text-primary: #1A1A1E;
-  --color-text-secondary: #5C5C5F;
-  --color-text-tertiary: #8B8B8E;
+  --color-text-primary: #E8F5E4;
+  --color-text-secondary: #8FBD87;
+  --color-text-tertiary: #527A4C;
 
-  --color-border-subtle: #D5D5D8;
-  --color-border-strong: #BBBBBE;
+  --color-border-subtle: #1F3020;
+  --color-border-strong: #2D4A2D;
 
-  --color-coin-gold: #B8912E;
-  --color-coin-gold-bright: #D4A843;
+  --color-brand: #52ae30;
+  --color-brand-dark: #3d8a24;
+  --color-brand-light: #7cc85e;
+  --color-brand-glow: rgba(82, 174, 48, 0.2);
+  --color-brand-surface: rgba(82, 174, 48, 0.1);
+
+  --color-coin-gold: #D4A843;
+  --color-coin-gold-bright: #F0C75E;
   --color-coin-gold-dim: #8A7035;
-  --color-coin-gold-glow: rgba(184, 145, 46, 0.12);
+  --color-coin-gold-glow: rgba(212, 168, 67, 0.15);
 
-  --color-status-success: #2DA858;
-  --color-status-warning: #C48A1A;
-  --color-status-error: #CC3333;
-  --color-status-info: #4080B8;
+  --color-status-success: #10B981;
+  --color-status-warning: #F59E0B;
+  --color-status-error: #EF4444;
+  --color-status-info: #60A5FA;
+
+  --shadow-xs: 0 1px 2px rgba(0, 0, 0, 0.4);
+  --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.5), 0 1px 2px rgba(0, 0, 0, 0.3);
+  --shadow-md: 0 4px 6px rgba(0, 0, 0, 0.45), 0 2px 4px rgba(0, 0, 0, 0.3);
+  --shadow-lg: 0 10px 15px rgba(0, 0, 0, 0.5), 0 4px 6px rgba(0, 0, 0, 0.3);
+  --shadow-xl: 0 20px 25px rgba(0, 0, 0, 0.55), 0 8px 10px rgba(0, 0, 0, 0.3);
 }

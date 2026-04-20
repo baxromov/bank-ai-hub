@@ -9,13 +9,14 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
       <input
         ref={ref}
         className={cn(
-          "w-full px-3 py-2 rounded-md text-sm outline-none transition-colors",
+          "w-full px-4 py-2.5 rounded-xl text-sm outline-none transition-all",
           className
         )}
         style={{
-          backgroundColor: "var(--color-bg-tertiary)",
-          border: "1px solid var(--color-border-subtle)",
+          backgroundColor: "var(--color-bg-primary)",
+          border: "1.5px solid var(--color-border-subtle)",
           color: "var(--color-text-primary)",
+          boxShadow: "var(--shadow-xs)",
         }}
         {...props}
       />

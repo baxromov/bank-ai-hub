@@ -17,8 +17,9 @@ export function AppShell({ children }: AppShellProps) {
       <div
         className="flex-1 flex flex-col transition-all"
         style={{
-          marginLeft: sidebarOpen ? "200px" : "64px",
+          marginLeft: sidebarOpen ? "220px" : "68px",
           transitionDuration: "var(--duration-normal)",
+          transitionTimingFunction: "var(--ease-out)",
         }}
       >
         <Header />

@@ -73,3 +73,5 @@ BankAI Hub — это внутренняя платформа, которая п
 В демо-режиме доступны 18 сотрудников по всем подразделениям банка, история транзакций, рейтинги и история чатов.
 
 **Демо-вход:** `sarvinoz.hasanova@ipotekabank.uz` / `demo123`
+
+<!--fill with demo data Gulnoza.Lutfullaeva@ipotekabank.uz and full with data-->

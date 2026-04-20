@@ -8,13 +8,13 @@ interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
 
 export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
   ({ className, variant = "default", size = "md", children, ...props }, ref) => {
-    const baseStyles = "inline-flex items-center justify-center rounded-md font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 disabled:pointer-events-none disabled:opacity-50";
+    const baseStyles = "inline-flex items-center justify-center rounded-xl font-medium transition-all focus-visible:outline-none disabled:pointer-events-none disabled:opacity-50";
 
     const variants = {
       default: "border hover:opacity-90",
-      primary: "text-sm font-medium",
+      primary: "text-sm font-semibold hover:opacity-90",
       ghost: "hover:opacity-80",
-      destructive: "text-sm font-medium",
+      destructive: "text-sm font-semibold hover:opacity-90",
     };
 
     const sizes = {
@@ -27,11 +27,13 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
       default: {
         borderColor: "var(--color-border-strong)",
         color: "var(--color-text-primary)",
-        backgroundColor: "transparent",
+        backgroundColor: "var(--color-bg-secondary)",
+        boxShadow: "var(--shadow-xs)",
       },
       primary: {
-        backgroundColor: "var(--color-coin-gold)",
-        color: "var(--color-bg-primary)",
+        background: "linear-gradient(135deg, #1a6832 0%, #52ae30 100%)",
+        color: "#FFFFFF",
+        boxShadow: "0 4px 12px rgba(82,174,48,0.35)",
       },
       ghost: {
         color: "var(--color-text-secondary)",
@@ -40,6 +42,7 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
       destructive: {
         backgroundColor: "var(--color-status-error)",
         color: "white",
+        boxShadow: "0 4px 12px rgba(239,68,68,0.3)",
       },
     };
 
