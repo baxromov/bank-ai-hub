@@ -29,6 +29,12 @@ async function request<T>(
   });
 
   if (!response.ok) {
+    if (response.status === 401 && typeof window !== "undefined") {
+      localStorage.removeItem("access_token");
+      localStorage.removeItem("refresh_token");
+      window.location.href = "/login";
+      throw new ApiError(401, "Unauthorized");
+    }
     const error = await response.json().catch(() => ({ detail: "Request failed" }));
     throw new ApiError(response.status, error.detail || "Request failed");
   }
@@ -79,6 +85,12 @@ export const chatApi = {
       body: JSON.stringify({ session_id: sessionId, content }),
     });
     if (!response.ok) {
+      if (response.status === 401 && typeof window !== "undefined") {
+        localStorage.removeItem("access_token");
+        localStorage.removeItem("refresh_token");
+        window.location.href = "/login";
+        throw new ApiError(401, "Unauthorized");
+      }
       const err = await response.json().catch(() => ({ detail: "Stream failed" }));
       throw new ApiError(response.status, err.detail || "Stream failed");
     }
