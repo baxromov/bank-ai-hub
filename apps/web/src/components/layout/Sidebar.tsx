@@ -1,5 +1,6 @@
 "use client";
 
+import { useEffect } from "react";
 import Image from "next/image";
 import { usePathname } from "next/navigation";
 import Link from "next/link";
@@ -64,10 +65,18 @@ function NavIcon({ name, active }: { name: string; active: boolean }) {
 export function Sidebar() {
   const pathname = usePathname();
   const sidebarOpen = useUIStore((s) => s.sidebarOpen);
+  const setSidebarOpen = useUIStore((s) => s.setSidebarOpen);
+
+  // Close sidebar on mobile when navigating
+  useEffect(() => {
+    if (window.innerWidth < 768) {
+      setSidebarOpen(false);
+    }
+  }, [pathname, setSidebarOpen]);
 
   return (
     <aside
-      className="fixed left-0 top-0 h-screen flex flex-col z-50 transition-all"
+      className={`fixed left-0 top-0 h-screen flex flex-col z-50 transition-all app-sidebar${sidebarOpen ? " sidebar-open" : ""}`}
       style={{
         width: sidebarOpen ? "220px" : "68px",
         backgroundColor: "var(--color-bg-secondary)",

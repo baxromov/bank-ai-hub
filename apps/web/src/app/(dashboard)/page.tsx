@@ -49,8 +49,8 @@ export default function DashboardPage() {
   return (
     <div>
       {/* Header */}
-      <div className="mb-8">
-        <h1 className="text-2xl font-bold tracking-tight" style={{ color: "var(--color-text-primary)" }}>
+      <div className="mb-6 md:mb-8">
+        <h1 className="text-xl md:text-2xl font-bold tracking-tight" style={{ color: "var(--color-text-primary)" }}>
           {greeting()}, {user?.first_name || "User"}
         </h1>
         <p className="mt-1 text-sm" style={{ color: "var(--color-text-secondary)" }}>

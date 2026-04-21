@@ -108,6 +108,209 @@ input:focus-visible {
 }
 
 /* ============================================
+   Mobile Responsive — Sidebar & Layout
+   ============================================ */
+@media (max-width: 767px) {
+  .app-main-content {
+    margin-left: 0 !important;
+  }
+
+  /* Sidebar — completely hidden on mobile (bottom nav takes over) */
+  .app-sidebar {
+    display: none !important;
+  }
+
+  /* Main content bottom padding — clears the bottom nav bar */
+  .app-main-scroll-area {
+    padding-bottom: calc(64px + env(safe-area-inset-bottom)) !important;
+  }
+
+  /* Bottom nav bar */
+  .mobile-bottom-nav {
+    display: flex;
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    z-index: 50;
+    height: calc(56px + env(safe-area-inset-bottom));
+    padding-bottom: env(safe-area-inset-bottom);
+    background-color: var(--color-bg-secondary);
+    border-top: 1px solid var(--color-border-subtle);
+    box-shadow: 0 -4px 12px rgba(13, 43, 13, 0.06);
+  }
+
+  /* More sheet */
+  .more-sheet {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    z-index: 45;
+    background-color: var(--color-bg-secondary);
+    border-radius: 20px 20px 0 0;
+    border-top: 1px solid var(--color-border-subtle);
+    padding: 8px 20px calc(72px + env(safe-area-inset-bottom));
+    transform: translateY(100%);
+    transition: transform var(--duration-normal) var(--ease-out);
+    box-shadow: var(--shadow-xl);
+  }
+
+  .more-sheet.more-sheet-open {
+    transform: translateY(0);
+  }
+
+  /* Chat sessions panel — fixed overlay on mobile */
+  .chat-sessions-panel {
+    position: fixed;
+    left: 1rem;
+    top: 5rem;
+    bottom: 4.5rem;
+    width: 280px;
+    z-index: 48;
+    transform: translateX(calc(-100% - 1rem));
+    transition: transform var(--duration-normal) var(--ease-out);
+    box-shadow: var(--shadow-xl);
+  }
+
+  .chat-sessions-panel[data-open="true"] {
+    transform: translateX(0);
+  }
+}
+
+@media (min-width: 768px) {
+  /* Hide bottom nav on desktop */
+  .mobile-bottom-nav {
+    display: none;
+  }
+
+  .more-sheet {
+    display: none;
+  }
+
+  .chat-sessions-panel {
+    position: relative;
+    width: 240px;
+    flex-shrink: 0;
+    transform: none !important;
+  }
+}
+
+/* ============================================
+   Bottom Nav — Tab items & More Sheet styles
+   ============================================ */
+.bottom-tab-item {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 3px;
+  padding: 6px 4px;
+  position: relative;
+  text-decoration: none;
+  background: none;
+  border: none;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+  transition: opacity var(--duration-fast);
+}
+
+.bottom-tab-item:active {
+  opacity: 0.7;
+}
+
+.bottom-tab-indicator {
+  position: absolute;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 24px;
+  height: 2.5px;
+  border-radius: 0 0 3px 3px;
+  background-color: var(--color-brand);
+}
+
+.bottom-tab-label {
+  font-size: 10px;
+  font-weight: 500;
+  color: var(--color-text-tertiary);
+  transition: color var(--duration-fast);
+  line-height: 1;
+}
+
+.bottom-tab-label.active {
+  color: var(--color-brand);
+  font-weight: 600;
+}
+
+.more-sheet-handle {
+  width: 36px;
+  height: 4px;
+  border-radius: 2px;
+  background-color: var(--color-border-strong);
+  margin: 0 auto 16px;
+}
+
+.more-sheet-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 10px;
+}
+
+.more-sheet-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  padding: 12px 8px;
+  border-radius: 14px;
+  text-decoration: none;
+  background-color: var(--color-bg-primary);
+  border: 1px solid var(--color-border-subtle);
+  transition: background-color var(--duration-fast), border-color var(--duration-fast);
+  -webkit-tap-highlight-color: transparent;
+}
+
+.more-sheet-item:active {
+  opacity: 0.8;
+}
+
+.more-sheet-item.active {
+  background-color: var(--color-brand-surface);
+  border-color: rgba(82, 174, 48, 0.25);
+}
+
+.more-sheet-icon-wrap {
+  width: 44px;
+  height: 44px;
+  border-radius: 12px;
+  background-color: var(--color-bg-secondary);
+  border: 1px solid var(--color-border-subtle);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.more-sheet-item.active .more-sheet-icon-wrap {
+  background-color: rgba(82, 174, 48, 0.08);
+  border-color: rgba(82, 174, 48, 0.2);
+}
+
+.more-sheet-label {
+  font-size: 11px;
+  font-weight: 500;
+  color: var(--color-text-secondary);
+  text-align: center;
+  line-height: 1.2;
+}
+
+.more-sheet-item.active .more-sheet-label {
+  color: var(--color-brand-dark);
+  font-weight: 600;
+}
+
+/* ============================================
    Dark Theme Overrides
    ============================================ */
 [data-theme="dark"] {

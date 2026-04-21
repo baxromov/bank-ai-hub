@@ -34,7 +34,7 @@ export function CoinBalanceDisplay() {
       >
         {balance !== null ? balance.toLocaleString() : "—"}
       </span>
-      <span className="text-xs font-medium" style={{ color: "var(--color-coin-gold-dim)", opacity: 0.7 }}>
+      <span className="text-xs font-medium hidden sm:inline" style={{ color: "var(--color-coin-gold-dim)", opacity: 0.7 }}>
         IB-Coin
       </span>
     </div>

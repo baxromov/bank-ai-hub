@@ -19,7 +19,7 @@ function RankingsSkeleton() {
     <Card>
       <div className="space-y-1">
         {Array.from({ length: 8 }).map((_, i) => (
-          <div key={i} className="flex items-center gap-4 py-3"
+          <div key={i} className="flex items-center gap-2 md:gap-4 py-3"
             style={{ borderBottom: i < 7 ? "1px solid var(--color-border-subtle)" : "none" }}>
             <Skeleton className="h-8 w-8 rounded-full shrink-0" />
             <div className="flex-1 space-y-1.5">
@@ -61,8 +61,8 @@ export default function RankingsPage() {
 
   return (
     <div>
-      <div className="mb-8">
-        <h1 className="text-2xl font-bold tracking-tight" style={{ color: "var(--color-text-primary)" }}>
+      <div className="mb-6 md:mb-8">
+        <h1 className="text-xl md:text-2xl font-bold tracking-tight" style={{ color: "var(--color-text-primary)" }}>
           Рейтинг
         </h1>
         <p className="mt-1 text-sm" style={{ color: "var(--color-text-secondary)" }}>
@@ -72,14 +72,14 @@ export default function RankingsPage() {
 
       {/* Category Tabs */}
       <div
-        className="flex gap-1 mb-6 p-1 rounded-xl"
-        style={{ backgroundColor: "var(--color-bg-elevated)", width: "fit-content" }}
+        className="flex gap-1 mb-6 p-1 rounded-xl overflow-x-auto"
+        style={{ backgroundColor: "var(--color-bg-elevated)", width: "fit-content", maxWidth: "100%", flexShrink: 0 }}
       >
         {CATEGORIES.map((cat) => (
           <button
             key={cat.key}
             onClick={() => setActiveCategory(cat.key)}
-            className="px-4 py-2 text-sm font-medium rounded-lg transition-all"
+            className="px-3 md:px-4 py-2 text-xs md:text-sm font-medium rounded-lg transition-all whitespace-nowrap shrink-0"
             style={{
               backgroundColor: activeCategory === cat.key ? "var(--color-bg-secondary)" : "transparent",
               color: activeCategory === cat.key ? "var(--color-brand-dark)" : "var(--color-text-secondary)",
@@ -111,7 +111,7 @@ export default function RankingsPage() {
               <div>
                 {entries.map((entry: any, i: number) => (
                   <div key={entry.user_id}
-                    className="flex items-center gap-4 py-3 transition-colors"
+                    className="flex items-center gap-2 md:gap-4 py-3 transition-colors"
                     style={{
                       borderBottom: i < entries.length - 1 ? "1px solid var(--color-border-subtle)" : "none",
                       backgroundColor: i < 3 ? `rgba(82,174,48,${0.04 - i * 0.01})` : "transparent",
@@ -129,7 +129,7 @@ export default function RankingsPage() {
                       )}
                     </div>
                     <div
-                      className="px-3 py-1 rounded-full text-sm font-bold tabular-nums"
+                      className="px-2 md:px-3 py-1 rounded-full text-xs md:text-sm font-bold tabular-nums shrink-0"
                       style={{
                         backgroundColor: i < 3 ? "var(--color-brand-surface)" : "var(--color-bg-primary)",
                         color: i < 3 ? "var(--color-brand-dark)" : "var(--color-text-secondary)",
@@ -174,11 +174,11 @@ function DepartmentLeaderboard({ departments, myDept }: { departments: any[]; my
         >
           <p className="text-xs font-semibold uppercase tracking-wider mb-3"
             style={{ color: "var(--color-brand)" }}>Ваш отдел</p>
-          <div className="flex items-center justify-between">
-            <p className="text-base font-bold" style={{ color: "var(--color-brand-dark)" }}>
+          <div className="flex items-center justify-between gap-3 min-w-0">
+            <p className="text-sm md:text-base font-bold truncate min-w-0" style={{ color: "var(--color-brand-dark)" }}>
               {myDept.department_label}
             </p>
-            <div className="text-right">
+            <div className="text-right shrink-0">
               <p className="text-xs mb-0.5" style={{ color: "var(--color-text-tertiary)" }}>Ваш вклад</p>
               <p className="text-sm font-semibold" style={{ color: "var(--color-text-primary)" }}>
                 {myDept.my_contribution} / {myDept.department_total}
@@ -195,7 +195,7 @@ function DepartmentLeaderboard({ departments, myDept }: { departments: any[]; my
           return (
             <div
               key={dept.department}
-              className="flex items-center gap-4 p-4 rounded-2xl transition-all"
+              className="flex items-center gap-2 md:gap-4 p-3 md:p-4 rounded-2xl transition-all"
               style={{
                 backgroundColor: "var(--color-bg-secondary)",
                 border: isMyDept ? "1.5px solid var(--color-brand)" : "1px solid var(--color-border-subtle)",
@@ -224,7 +224,7 @@ function DepartmentLeaderboard({ departments, myDept }: { departments: any[]; my
                   {dept.member_count} участников
                 </p>
               </div>
-              <p className="text-lg font-bold tabular-nums" style={{ color: "var(--color-text-primary)", fontFamily: "var(--font-mono)" }}>
+              <p className="text-base md:text-lg font-bold tabular-nums shrink-0" style={{ color: "var(--color-text-primary)", fontFamily: "var(--font-mono)" }}>
                 {dept.total_score.toFixed(0)}
               </p>
             </div>

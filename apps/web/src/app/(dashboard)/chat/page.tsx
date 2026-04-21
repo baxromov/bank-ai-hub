@@ -24,6 +24,7 @@ export default function ChatPage() {
   const [animatingId, setAnimatingId] = useState<string | null>(null);
   const [sessionsLoading, setSessionsLoading] = useState(true);
   const newSessionRef = useRef<string | null>(null);
+  const [mobileSessionsOpen, setMobileSessionsOpen] = useState(false);
 
   useEffect(() => {
     bottomRef.current?.scrollIntoView({ behavior: "smooth" });
@@ -45,6 +46,7 @@ export default function ChatPage() {
   const handleNewSession = () => {
     setActiveSession(null);
     setMessages([]);
+    setMobileSessionsOpen(false);
   };
 
   const handleDeleteSession = async (e: React.MouseEvent, sessionId: string) => {
@@ -88,10 +90,20 @@ export default function ChatPage() {
   };
 
   return (
-    <div className="flex h-[calc(100vh-4rem-3rem)] gap-4">
+    <div className="flex h-[calc(100vh-4rem-2rem)] md:h-[calc(100vh-4rem-3rem)] gap-4 relative">
+      {/* Mobile sessions overlay backdrop */}
+      {mobileSessionsOpen && (
+        <div
+          className="fixed inset-0 z-40 md:hidden"
+          style={{ backgroundColor: "rgba(0,0,0,0.45)" }}
+          onClick={() => setMobileSessionsOpen(false)}
+        />
+      )}
+
       {/* Session Sidebar */}
       <div
-        className="w-60 flex-shrink-0 flex flex-col rounded-2xl overflow-hidden"
+        className="flex-shrink-0 flex flex-col rounded-2xl overflow-hidden chat-sessions-panel"
+        data-open={mobileSessionsOpen}
         style={{
           backgroundColor: "var(--color-bg-secondary)",
           border: "1px solid var(--color-border-subtle)",
@@ -150,7 +162,7 @@ export default function ChatPage() {
                 session={s}
                 active={activeSessionId === s.id}
                 animating={animatingId === s.id}
-                onSelect={() => setActiveSession(s.id)}
+                onSelect={() => { setActiveSession(s.id); setMobileSessionsOpen(false); }}
                 onDelete={(e) => handleDeleteSession(e, s.id)}
                 onAnimationDone={() => setAnimatingId(null)}
               />
@@ -170,10 +182,25 @@ export default function ChatPage() {
       >
         {/* Chat header */}
         <div
-          className="px-5 py-3 flex items-center justify-between"
+          className="px-4 md:px-5 py-3 flex items-center justify-between"
           style={{ borderBottom: "1px solid var(--color-border-subtle)" }}
         >
           <div className="flex items-center gap-2.5">
+            {/* Mobile sessions toggle */}
+            <button
+              onClick={() => setMobileSessionsOpen(true)}
+              className="md:hidden p-2 rounded-xl transition-all"
+              style={{
+                backgroundColor: "var(--color-bg-primary)",
+                border: "1px solid var(--color-border-subtle)",
+                color: "var(--color-text-secondary)",
+              }}
+              title="Чаты"
+            >
+              <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                <path strokeLinecap="round" strokeLinejoin="round" d="M4 6h16M4 12h16M4 18h7" />
+              </svg>
+            </button>
             <div
               className="w-8 h-8 rounded-xl flex items-center justify-center"
               style={{ background: "linear-gradient(135deg, #1a6832 0%, #52ae30 100%)" }}
@@ -216,7 +243,7 @@ export default function ChatPage() {
         </div>
 
         {/* Messages */}
-        <div className="flex-1 overflow-auto p-5">
+        <div className="flex-1 overflow-auto p-3 md:p-5">
           {messages.length === 0 ? (
             <div className="h-full flex flex-col items-center justify-center gap-7">
               <div className="text-center">
@@ -235,7 +262,7 @@ export default function ChatPage() {
                   Задайте вопрос или выберите одну из подсказок ниже
                 </p>
               </div>
-              <div className="grid grid-cols-2 gap-3 w-full max-w-lg">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 w-full max-w-lg">
                 {SUGGESTED.map((s) => (
                   <button
                     key={s.q}
@@ -371,7 +398,7 @@ function SessionItem({
       </button>
       <button
         onClick={onDelete}
-        className="opacity-0 group-hover:opacity-100 p-1.5 mr-1 rounded-lg transition-opacity"
+        className="opacity-100 sm:opacity-0 sm:group-hover:opacity-100 p-1.5 mr-1 rounded-lg transition-opacity"
         style={{ color: "var(--color-text-tertiary)" }}
         title="Удалить"
       >

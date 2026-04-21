@@ -13,13 +13,15 @@ export function MessageBubble({ role, content }: MessageBubbleProps) {
 
   if (isUser) {
     return (
-      <div className="flex justify-end mb-4 gap-2.5 items-end">
+      <div className="flex justify-end mb-4 gap-2 items-end">
         <div
-          className="max-w-[75%] rounded-2xl rounded-br-md px-4 py-3 text-sm leading-relaxed"
+          className="max-w-[88%] md:max-w-[75%] rounded-2xl rounded-br-md px-4 py-3 text-sm leading-relaxed break-words"
           style={{
             background: "linear-gradient(135deg, #1a6832 0%, #52ae30 100%)",
             color: "white",
             boxShadow: "0 2px 10px rgba(82,174,48,0.30)",
+            wordBreak: "break-word",
+            overflowWrap: "anywhere",
           }}
         >
           <p className="whitespace-pre-wrap">{content}</p>
@@ -35,7 +37,7 @@ export function MessageBubble({ role, content }: MessageBubbleProps) {
   }
 
   return (
-    <div className="flex justify-start mb-4 gap-2.5 items-end">
+    <div className="flex justify-start mb-4 gap-2 items-end">
       <div
         className="w-7 h-7 rounded-full flex items-center justify-center shrink-0"
         style={{ background: "linear-gradient(135deg, #1a6832 0%, #52ae30 100%)", boxShadow: "0 2px 8px rgba(82,174,48,0.25)" }}
@@ -45,30 +47,63 @@ export function MessageBubble({ role, content }: MessageBubbleProps) {
         </svg>
       </div>
       <div
-        className="max-w-[75%] rounded-2xl rounded-bl-md px-4 py-3 text-sm"
+        className="min-w-0 max-w-[88%] md:max-w-[78%] rounded-2xl rounded-bl-md px-4 py-3 text-sm"
         style={{
           backgroundColor: "var(--color-bg-secondary)",
           border: "1px solid var(--color-border-subtle)",
           color: "var(--color-text-primary)",
           boxShadow: "var(--shadow-xs)",
+          wordBreak: "break-word",
+          overflowWrap: "anywhere",
         }}
       >
         <ReactMarkdown
           remarkPlugins={[remarkGfm]}
           components={{
-            p: ({ children }) => <p className="mb-2 last:mb-0 leading-relaxed">{children}</p>,
-            h1: ({ children }) => <h1 className="text-base font-bold mb-2 mt-3 first:mt-0" style={{ color: "var(--color-text-primary)" }}>{children}</h1>,
-            h2: ({ children }) => <h2 className="text-sm font-bold mb-2 mt-3 first:mt-0" style={{ color: "var(--color-text-primary)" }}>{children}</h2>,
-            h3: ({ children }) => <h3 className="text-sm font-semibold mb-1 mt-2 first:mt-0" style={{ color: "var(--color-text-primary)" }}>{children}</h3>,
-            ul: ({ children }) => <ul className="list-disc list-inside mb-2 space-y-0.5">{children}</ul>,
-            ol: ({ children }) => <ol className="list-decimal list-inside mb-2 space-y-0.5">{children}</ol>,
-            li: ({ children }) => <li className="leading-relaxed">{children}</li>,
+            p: ({ children }) => (
+              <p className="mb-2 last:mb-0 leading-relaxed" style={{ overflowWrap: "anywhere" }}>
+                {children}
+              </p>
+            ),
+            h1: ({ children }) => (
+              <h1 className="text-base font-bold mb-2 mt-3 first:mt-0" style={{ color: "var(--color-text-primary)" }}>
+                {children}
+              </h1>
+            ),
+            h2: ({ children }) => (
+              <h2 className="text-sm font-bold mb-2 mt-3 first:mt-0" style={{ color: "var(--color-text-primary)" }}>
+                {children}
+              </h2>
+            ),
+            h3: ({ children }) => (
+              <h3 className="text-sm font-semibold mb-1 mt-2 first:mt-0" style={{ color: "var(--color-text-primary)" }}>
+                {children}
+              </h3>
+            ),
+            ul: ({ children }) => (
+              <ul className="list-disc mb-2 space-y-1 pl-4">{children}</ul>
+            ),
+            ol: ({ children }) => (
+              <ol className="list-decimal mb-2 space-y-1 pl-4">{children}</ol>
+            ),
+            li: ({ children }) => (
+              <li className="leading-relaxed" style={{ overflowWrap: "anywhere" }}>
+                {children}
+              </li>
+            ),
             code: ({ className, children, ...props }) => {
               const isBlock = className?.includes("language-");
               return isBlock ? (
                 <code
-                  className={`block rounded-xl px-3 py-2.5 text-xs font-mono overflow-x-auto my-2 ${className ?? ""}`}
-                  style={{ backgroundColor: "var(--color-bg-primary)", color: "var(--color-brand)", border: "1px solid var(--color-border-subtle)" }}
+                  className={`block rounded-xl px-3 py-2.5 text-xs font-mono my-2 ${className ?? ""}`}
+                  style={{
+                    backgroundColor: "var(--color-bg-primary)",
+                    color: "var(--color-brand)",
+                    border: "1px solid var(--color-border-subtle)",
+                    whiteSpace: "pre-wrap",
+                    wordBreak: "break-all",
+                    overflowWrap: "anywhere",
+                  }}
                   {...props}
                 >
                   {children}
@@ -76,26 +111,82 @@ export function MessageBubble({ role, content }: MessageBubbleProps) {
               ) : (
                 <code
                   className="rounded-md px-1.5 py-0.5 text-xs font-mono"
-                  style={{ backgroundColor: "var(--color-bg-primary)", color: "var(--color-brand)" }}
+                  style={{
+                    backgroundColor: "var(--color-bg-primary)",
+                    color: "var(--color-brand)",
+                    wordBreak: "break-all",
+                  }}
                   {...props}
                 >
                   {children}
                 </code>
               );
             },
-            pre: ({ children }) => <pre className="mb-2 overflow-x-auto">{children}</pre>,
+            pre: ({ children }) => (
+              <pre
+                className="mb-2 rounded-xl overflow-x-auto"
+                style={{
+                  backgroundColor: "var(--color-bg-primary)",
+                  border: "1px solid var(--color-border-subtle)",
+                  padding: "10px 12px",
+                  fontSize: "12px",
+                  maxWidth: "100%",
+                }}
+              >
+                {children}
+              </pre>
+            ),
             blockquote: ({ children }) => (
               <blockquote
                 className="border-l-2 pl-3 my-2 italic rounded-r-lg"
-                style={{ borderColor: "var(--color-brand)", color: "var(--color-text-secondary)", backgroundColor: "var(--color-brand-surface)", padding: "8px 12px" }}
+                style={{
+                  borderColor: "var(--color-brand)",
+                  color: "var(--color-text-secondary)",
+                  backgroundColor: "var(--color-brand-surface)",
+                  padding: "8px 12px",
+                }}
               >
                 {children}
               </blockquote>
             ),
-            strong: ({ children }) => <strong className="font-semibold" style={{ color: "var(--color-text-primary)" }}>{children}</strong>,
+            strong: ({ children }) => (
+              <strong className="font-semibold" style={{ color: "var(--color-text-primary)" }}>
+                {children}
+              </strong>
+            ),
+            table: ({ children }) => (
+              <div className="overflow-x-auto my-2 rounded-xl" style={{ border: "1px solid var(--color-border-subtle)" }}>
+                <table className="w-full text-xs border-collapse">{children}</table>
+              </div>
+            ),
+            thead: ({ children }) => (
+              <thead style={{ backgroundColor: "var(--color-bg-primary)" }}>{children}</thead>
+            ),
+            th: ({ children }) => (
+              <th
+                className="px-3 py-2 text-left font-semibold"
+                style={{ borderBottom: "1px solid var(--color-border-subtle)", color: "var(--color-text-secondary)" }}
+              >
+                {children}
+              </th>
+            ),
+            td: ({ children }) => (
+              <td
+                className="px-3 py-2"
+                style={{ borderBottom: "1px solid var(--color-border-subtle)", color: "var(--color-text-primary)" }}
+              >
+                {children}
+              </td>
+            ),
             hr: () => <hr className="my-3" style={{ borderColor: "var(--color-border-subtle)" }} />,
             a: ({ href, children }) => (
-              <a href={href} target="_blank" rel="noopener noreferrer" style={{ color: "var(--color-brand)" }} className="underline underline-offset-2 font-medium">
+              <a
+                href={href}
+                target="_blank"
+                rel="noopener noreferrer"
+                style={{ color: "var(--color-brand)", wordBreak: "break-all" }}
+                className="underline underline-offset-2 font-medium"
+              >
                 {children}
               </a>
             ),

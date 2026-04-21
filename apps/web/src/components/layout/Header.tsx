@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import { useAuthStore } from "@/stores/auth";
 import { useNotificationStore } from "@/stores/notification";
 import { useUIStore } from "@/stores/ui";
@@ -21,10 +22,28 @@ export function Header() {
         boxShadow: "var(--shadow-sm)",
       }}
     >
-      {/* Left — Sidebar toggle */}
+      {/* Mobile — Logo mark */}
+      <Link href="/" className="md:hidden shrink-0">
+        <div
+          style={{
+            width: "32px",
+            height: "32px",
+            borderRadius: "10px",
+            background: "linear-gradient(135deg, #1a6832 0%, #52ae30 100%)",
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            boxShadow: "0 2px 8px rgba(82,174,48,0.35)",
+          }}
+        >
+          <span style={{ color: "#fff", fontWeight: 700, fontSize: "14px" }}>İ</span>
+        </div>
+      </Link>
+
+      {/* Desktop — Sidebar toggle */}
       <button
         onClick={toggleSidebar}
-        className="p-2 rounded-xl transition-all hover:opacity-80"
+        className="hidden md:flex p-2 rounded-xl transition-all hover:opacity-80"
         style={{
           color: "var(--color-text-secondary)",
           backgroundColor: "var(--color-bg-primary)",
@@ -41,8 +60,10 @@ export function Header() {
         </svg>
       </button>
 
-      {/* Center — Coin Balance */}
-      <CoinBalanceDisplay />
+      {/* Center — Coin Balance (desktop only) */}
+      <div className="hidden md:flex">
+        <CoinBalanceDisplay />
+      </div>
 
       {/* Right — Notifications + User */}
       <div className="flex items-center gap-2">
@@ -93,7 +114,7 @@ export function Header() {
           </span>
           <button
             onClick={logout}
-            className="transition-colors hover:opacity-70 hidden sm:block"
+            className="hidden md:flex transition-colors hover:opacity-70"
             style={{ color: "var(--color-text-tertiary)" }}
             title="Выйти"
           >

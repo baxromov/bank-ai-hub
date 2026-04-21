@@ -50,7 +50,7 @@ export function PromptInput({ onSend, disabled }: PromptInputProps) {
         onKeyDown={handleKeyDown}
         onFocus={() => setFocused(true)}
         onBlur={() => setFocused(false)}
-        placeholder="Напишите сообщение... (Enter — отправить, Shift+Enter — новая строка)"
+        placeholder="Напишите сообщение..."
         rows={1}
         disabled={disabled}
         className="flex-1 resize-none text-sm outline-none leading-relaxed"
