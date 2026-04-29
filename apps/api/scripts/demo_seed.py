@@ -79,10 +79,10 @@ EMPLOYEES = [
     # Legal
     dict(employee_id="LGL001", email="dilorom.xasanova@ipotekabank.uz",   first_name="Дилором", last_name="Хасанова",  department=Department.LEGAL,     position="Юрист"),
     dict(employee_id="LGL002", email="behruz.saidov@ipotekabank.uz",      first_name="Бехруз", last_name="Саидов",    department=Department.LEGAL,      position="Старший юрист"),
-    # New employees
-    dict(employee_id="HR003",  email="gulnoza.lutfullaeva@ipotekabank.uz", first_name="Гулноза",  last_name="Лутфуллаева", department=Department.HR,       position="HR Business Partner"),
-    dict(employee_id="SAL004", email="shakhzoda.bendik@ipotekabank.uz",    first_name="Шахзода",  last_name="Бендик",      department=Department.SALES,    position="Менеджер по работе с клиентами"),
-    dict(employee_id="FIN003", email="shakhnoza.umarova@ipotekabank.uz",   first_name="Шахноза",  last_name="Умарова",     department=Department.FINANCE,  position="Финансовый контролёр"),
+    # Training and Development department
+    dict(employee_id="TRN001", email="shakhzoda.bendik@ipotekabank.uz",    first_name="Шахзода",  last_name="Бендик",      department=Department.TRAINING, position="Руководитель отдела обучения и развития", role=UserRole.DEPT_HEAD),
+    dict(employee_id="TRN002", email="gulnoza.lutfullaeva@ipotekabank.uz", first_name="Гулноза",  last_name="Лутфуллаева", department=Department.TRAINING, position="Старший менеджер по обучению и развитию"),
+    dict(employee_id="TRN003", email="shakhnoza.umarova@ipotekabank.uz",   first_name="Шахноза",  last_name="Умарова",     department=Department.TRAINING, position="Менеджер по обучению и развитию"),
     dict(employee_id="OPS003", email="yevgenia.babaeva@ipotekabank.uz",    first_name="Евгения",  last_name="Бабаева",     department=Department.OPERATIONS, position="Старший операционный специалист"),
 ]
 
@@ -194,7 +194,7 @@ async def seed_demo(session: AsyncSession) -> None:
             password_hash=hash_password("demo123"),
             first_name=emp_data["first_name"],
             last_name=emp_data["last_name"],
-            role=UserRole.EMPLOYEE,
+            role=emp_data.get("role", UserRole.EMPLOYEE),
             department=emp_data["department"],
             position=emp_data["position"],
             is_active=True,

@@ -19,6 +19,7 @@ class Department(str, Enum):
     FINANCE = "finance"
     LEGAL = "legal"
     MARKETING = "marketing"
+    TRAINING = "training"
 
 
 @dataclass
