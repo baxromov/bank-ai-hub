@@ -14,7 +14,7 @@ depends_on = None
 
 
 def upgrade() -> None:
-    op.execute("ALTER TYPE department ADD VALUE IF NOT EXISTS 'training'")
+    op.execute("ALTER TYPE department ADD VALUE IF NOT EXISTS 'TRAINING'")
 
 
 def downgrade() -> None:

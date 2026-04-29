@@ -73,5 +73,27 @@ BankAI Hub — это внутренняя платформа, которая п
 В демо-режиме доступны 18 сотрудников по всем подразделениям банка, история транзакций, рейтинги и история чатов.
 
 **Демо-вход:** `sarvinoz.hasanova@ipotekabank.uz` / `demo123`
+Hammasi tayyor. Seed muvaffaqiyatli bajarildi:
 
-<!--fill with demo data Gulnoza.Lutfullaeva@ipotekabank.uz and full with data-->
+ 22 ta xodim (18 eski + 4 yangi)
+
+ ┌────────────────────────────────────┬────────────┬─────────────────────────────────┐
+ │           Foydalanuvchi            │   Bo'lim   │             Lavozim             │
+ ├────────────────────────────────────┼────────────┼─────────────────────────────────┤
+ │ gulnoza.lutfullaeva@ipotekabank.uz │ HR         │ HR Business Partner             │
+ ├────────────────────────────────────┼────────────┼─────────────────────────────────┤
+ │ shakhzoda.bendik@ipotekabank.uz    │ Sales      │ Менеджер по работе с клиентами  │
+ ├────────────────────────────────────┼────────────┼─────────────────────────────────┤
+ │ shakhnoza.umarova@ipotekabank.uz   │ Finance    │ Финансовый контролёр            │
+ ├────────────────────────────────────┼────────────┼─────────────────────────────────┤
+ │ yevgenia.babaeva@ipotekabank.uz    │ Operations │ Старший операционный специалист │
+ └────────────────────────────────────┴────────────┴─────────────────────────────────┘
+
+ Har biri uchun demo data:
+ - Coin balansi + 8-20 ta tranzaksiya
+ - Reyting (4 kategoriya, hafta 17/2026)
+ - Badgelar (first_prompt, quality_writer, top3_weekly va boshqalar)
+ - Chat sessiyalar + xabarlar
+ - Notification larni
+
+ Parol hammasi uchun: demo123
